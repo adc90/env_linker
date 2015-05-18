@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Set debugger
-set -x
+#set -x
 
 PackageManager="apt-get install"
 
@@ -24,7 +24,7 @@ InstallPrograms() {
 
 CheckRoot(){
     if [ "$(id -u)" != "0" ]; then
-	echo "Sorry, you are not root."
+	echo "Please run env_linker as root"
 	exit 1
     else
 	echo "You're root"
@@ -32,13 +32,24 @@ CheckRoot(){
     fi
 }
 
-CheckFile(){
+#CheckFile(){
     #Check if the dots files are in the home
     #directory and if they are move them
     #gbd-doc
     #bash-completion
     #ln -sf
+#}
+
+
+ParseList() {
+    programList="program_list.json"
+    cat $programList | ./jq '.programs' | sed 's/[][]//g' | sed 's/"//g' | \
+	                   sed 's/,//g' | sed ':a;N;$!ba;s/\n//g' | sed 's/^[ \t]*//g'
+    echo $programList
 }
 
-InternetUtilInstalled
+
+ParseList
 CheckRoot
+#InternetUtilInstalled
+#CheckRoot
