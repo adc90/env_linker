@@ -5,51 +5,59 @@
 
 PackageManager="apt-get install"
 
-InternetUtilInstalled() {
+function InternetUtilInstalled {
     if hash curl 2>/dev/null; then
-	echo "curl is installed"
+        echo "curl is installed"
     elif hash wget 2>/dev/null; then
-	echo "wget is installed"
+        echo "wget is installed"
     else 
-	echo "Please install curl or wget"
+        echo "Please install curl or wget"
     fi
 }
 
-InstallPrograms() {
-    for i in "$@"
-    do
-	echo "$i"
+function InstallPrograms {
+    if [ -z "$1" ]; then
+        echo "No programs listed in programList.json"
+        exit 0
+    fi
+    for x in $@; do
+        $PackageManager $x
     done
 }
 
-CheckRoot(){
+function CheckRoot {
     if [ "$(id -u)" != "0" ]; then
-	echo "Please run env_linker as root"
-	exit 1
+        echo "Please run env_linker as root"
+        exit 0
     else
-	echo "You're root"
-	exit 0
+        echo "You're root"
     fi
 }
 
-#CheckFile(){
-    #Check if the dots files are in the home
-    #directory and if they are move them
-    #gbd-doc
-    #bash-completion
-    #ln -sf
-#}
-
-
-ParseList() {
+function ParseList {
     programList="program_list.json"
     cat $programList | ./jq '.programs' | sed 's/[][]//g' | sed 's/"//g' | \
-	                   sed 's/,//g' | sed ':a;N;$!ba;s/\n//g' | sed 's/^[ \t]*//g'
-    echo $programList
+        sed 's/,//g' | sed ':a;N;$!ba;s/\n//g' | sed 's/^[ \t]*//g'
+}
+
+function LinkDotFiles {
+    for x in $(ls -d .dotfiles/.*); do
+        if ln -s $x $HOME; then
+            echo $x
+        fi
+    done
 }
 
 
-ParseList
-CheckRoot
-#InternetUtilInstalled
-#CheckRoot
+
+function env_linker {
+    #Check if the user is root otherwise exit
+    LinkDotFiles
+    CheckRoot 
+    InstallPrograms $(ParseList)
+}
+
+#Main function
+env_linker
+
+
