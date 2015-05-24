@@ -1,3 +1,8 @@
-{"programs": ["pry",
-            "bash-completion"
+{"programs":
+[
+    "pry",
+    "bash-completion",
+    "rake",
+    "vim",
+    "emacs"
 ]}
