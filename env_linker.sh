@@ -41,12 +41,12 @@ function ParseList {
 }
 
 function LinkDotFiles {
-    
+    directoryLock="true"
     for x in $(ls -d .dotfiles/.* | grep "^\.."); do
         if ln -s $x $HOME; then
             echo $x
         else
-
+            echo "Hi"
         fi
     done
 }
@@ -70,5 +70,4 @@ function CompareFiles {
 
 #Main function
 env_linker
-
 
