@@ -41,20 +41,31 @@ function ParseList {
 }
 
 function LinkDotFiles {
-    for x in $(ls -d .dotfiles/.*); do
+    
+    for x in $(ls -d .dotfiles/.* | grep "^\.."); do
         if ln -s $x $HOME; then
             echo $x
+        else
+
         fi
     done
 }
-
-
 
 function env_linker {
     #Check if the user is root otherwise exit
     LinkDotFiles
     CheckRoot 
     InstallPrograms $(ParseList)
+}
+
+function CompareFiles {
+    file1= `md5 $1`
+    file2= `md5 $2`
+    if [ "$file1" == "$file2" ]; then
+        echo "Files have the same content"
+    else
+        echo "Files have NOT the same content"
+    fi
 }
 
 #Main function
