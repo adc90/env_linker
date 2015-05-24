@@ -16,8 +16,6 @@
 PACKAGE_MANAGER="apt-get install"
 DOT_FILES=".dotfiles"
 
-
-
 function InternetUtilInstalled {
     if hash curl 2>/dev/null; then
         echo "curl is installed"
