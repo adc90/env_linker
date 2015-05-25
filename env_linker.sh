@@ -60,7 +60,7 @@ function LinkDotFiles {
                     mkdir "$HOME/.backup"
                 fi
                 echo "Moving old dotfile to .backup: "$x
-                mv $x "$HOME/.backup/"
+                mv "$HOME/"$x "$HOME/.backup/"
                 echo "Creating a symlink for: "$x
                 ln -s $x $HOME
             fi

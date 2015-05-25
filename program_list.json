@@ -1,8 +1,8 @@
-{"programs":
-[
-    "pry",
-    "bash-completion",
-    "rake",
-    "vim",
-    "emacs"
+{"programs": [
+	"pry",
+	"bash-completion",
+	"rake",
+	"erlang",
+	"vim",
+	"emacs"
 ]}
